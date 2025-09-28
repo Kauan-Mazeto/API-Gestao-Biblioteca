@@ -10,5 +10,19 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = file:./biblioteca_gestao.db
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  username String @unique
+  password String
+  isAdmin Boolean @default(false)
+}
+
+model Book {
+  id Int @id @default(autoincrement())
+  title String
+  author String
+  available Boolean @default(true)
 }
