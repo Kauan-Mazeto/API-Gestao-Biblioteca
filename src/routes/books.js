@@ -1,6 +1,7 @@
-import Router from 'express';
-import { verificarUsuario } from '../middlewares/auth';
-import { pegarTodosOsLivros, pegarLivroPorId, criarNovoLivro, atualizarLivro, deletarLivro, borrowLivro, returnLivro } from '../controller/books-controller';
+import { Router } from 'express';
+import { authMiddleware } from '../middlewares/auth.js';
+import { pegarTodosOsLivros, pegarLivroPorId, criarNovoLivro, atualizarLivro, deletarLivro, borrowLivro, returnLivro } from '../controller/books-controller.js';
+import { verificarUsuario } from '../middlewares/admin.js';
 
 const booksRouter = Router();
 booksRouter.use(authMiddleware);

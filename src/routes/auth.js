@@ -1,10 +1,7 @@
-import Router from 'express';
-import { verificarUsuario } from '../middlewares/auth';
+import { Router } from 'express';
+import { authMiddleware } from '../middlewares/auth.js';
 
 const authRouter = Router();
-
-
-authRouter.use(verificarUsuario);
 
 authRouter.post('/register', (req, res) => {
     res.send("Registro de usuário");
