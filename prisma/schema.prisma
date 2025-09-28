@@ -10,5 +10,5 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = meu_banco.db
+  url      = file:./biblioteca_gestao.db
 }

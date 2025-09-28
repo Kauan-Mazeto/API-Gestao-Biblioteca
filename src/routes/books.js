@@ -3,7 +3,7 @@ import { verificarUsuario } from '../middlewares/auth';
 import { pegarTodosOsLivros, pegarLivroPorId, criarNovoLivro, atualizarLivro, deletarLivro, borrowLivro, returnLivro } from '../controller/books-controller';
 
 const booksRouter = Router();
-
+booksRouter.use(authMiddleware);
 
 booksRouter.get('/', (req, res) => {
     pegarTodosOsLivros(req, res);
