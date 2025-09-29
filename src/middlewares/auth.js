@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 export async function authMiddleware(req, res, next) {
     const authHeader = req.headers["authorization"];
 
-    if (!authHeader || !authHeader.startsWith("Basic ")) {
+    if (!authHeader || !authHeader.startsWith("basic ")) {
         return res.status(401).json({ error: "Token de autenticação não fornecido" });
     }
 

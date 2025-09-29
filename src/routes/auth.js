@@ -3,7 +3,7 @@ import { authMiddleware } from '../middlewares/auth.js';
 
 const authRouter = Router();
 
-authRouter.post('/register', (req, res) => {
+authRouter.post('/register', authMiddleware, (req, res) => {
     res.send("Registro de usuário");
 });
 
