@@ -11,7 +11,10 @@ Projeto final de uma API REST simplificada para gerenciar livros de uma bibliote
 - SQLite
 - Postman (para testes)
 
----
+# Token de Autenticação
+
+- kauan:1234
+- Basic a2F1YW46MTIzNA==
 
 
 # Rotas
