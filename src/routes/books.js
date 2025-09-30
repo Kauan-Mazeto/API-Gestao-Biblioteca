@@ -5,31 +5,31 @@ import { verificarUsuario } from "../middlewares/admin.js";
 
 const booksRouter = express.Router();
 
-booksRouter.get("/",  (req, res) => {
+booksRouter.get("/", authMiddleware,  (req, res) => {
     getBooks(req, res);
 });
 
-booksRouter.get("/:id",  (req, res) => {
+booksRouter.get("/:id", authMiddleware, (req, res) => {
     getBookById(req, res);
 });
 
-booksRouter.post("/", (req, res) => {
+booksRouter.post("/", authMiddleware, verificarUsuario, (req, res) => {
     createBook(req, res);
 });
 
-booksRouter.patch("/:id", (req, res) => {
+booksRouter.patch("/:id", authMiddleware, verificarUsuario, (req, res) => {
     updateBook(req, res)
 });
 
-booksRouter.delete("/:id", (req, res) => {
+booksRouter.delete("/:id", authMiddleware, verificarUsuario, (req, res) => {
     deleteBook(req, res);
 });
 
-booksRouter.post("/:id/borrow",  (req, res) => {
+booksRouter.post("/:id/borrow", authMiddleware, (req, res) => {
     borrowBook(req, res);
 });
 
-booksRouter.post("/:id/return",  (req, res) => {
+booksRouter.post("/:id/return", authMiddleware, (req, res) => {
     returnBook(req, res)
 });
 
