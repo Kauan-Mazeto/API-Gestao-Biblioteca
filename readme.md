@@ -59,9 +59,9 @@ Projeto final de uma API REST simplificada para gerenciar livros de uma bibliote
 # Instalação
 
 ```bash
-git clone <url-do-repo>
+git clone <url-do-repositório>
 cd API-Gestao-Biblioteca
 npm install
 npx prisma migrate dev --name init
-node prisma/seed.js # popular banco
+node prisma/server.js # popular banco
 npm start
