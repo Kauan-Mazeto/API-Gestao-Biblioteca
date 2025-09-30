@@ -1,9 +1,10 @@
 import { Router } from 'express';
-import { authMiddleware } from '../middlewares/auth.js';
+import { registrarUsuario } from '../controller/auth-controller.js';
 
 const authRouter = Router();
 
-authRouter.post('/register', authMiddleware, (req, res) => {
+authRouter.post('/register', (req, res) => {
+    registrarUsuario(req, res)
     res.send("Registro de usuário");
 });
 

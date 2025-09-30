@@ -1,40 +1,40 @@
-import { PrismaClient } from '@prisma/client';
+// src/middlewares/auth.js
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export async function authMiddleware(req, res, next) {
+  try {
     const authHeader = req.headers["authorization"];
 
-    if (!authHeader || !authHeader.startsWith("basic ")) {
-        return res.status(401).json({ error: "Token de autenticação não fornecido" });
+    // Se não tiver Authorization no header → erro
+    if (!authHeader || !authHeader.startsWith("Basic ")) {
+      return res.status(401).json({ error: "Token de autenticação ausente ou inválido" });
     }
 
-    try {
-        const base64Credentials = authHeader.split(" ")[1];
-        const credentials = Buffer.from(base64Credentials, "base64").toString("utf-8");
+    // Pega só a parte depois de "Basic "
+    const base64Token = authHeader.split(" ")[1];
 
-        const [username, password] = credentials.split(":");
+    // Decodifica Base64 para texto normal "username:password"
+    const decoded = Buffer.from(base64Token, "base64").toString("utf-8");
 
-        if (!username || !password) {
-            return res.status(401).json({ error: "Credenciais inválidas" });
-        }
+    const [username, password] = decoded.split(":");
 
-        
-        const user = await prisma.user.findUnique({ where: { username } });
+    // Busca usuário no banco
+    const user = await prisma.user.findUnique({
+      where: { username },
+    });
 
-        if (!user || user.password !== password) {
-            return res.status(401).json({ error: "Usuário ou senha inválidos" });
-        }
-
-        
-        req.user = {
-            id: user.id,
-            username: user.username,
-            isAdmin: user.isAdmin,
-        };
-
-        next();
-    } catch (err) {
-        console.error(err);
-        return res.status(500).json({ error: "Erro no processo de autenticação" });
+    // Valida credenciais
+    if (!user || user.password !== password) {
+      return res.status(401).json({ error: "Credenciais inválidas" });
     }
+
+    // Se ok → coloca user no req para ser usado no controller/admin
+    req.user = user;
+
+    return next(); // segue para a próxima etapa (controller ou admin middleware)
+  } catch (error) {
+    console.error("Erro no middleware de autenticação:", error);
+    return res.status(500).json({ error: "Erro no middleware de autenticação" });
+  }
 }

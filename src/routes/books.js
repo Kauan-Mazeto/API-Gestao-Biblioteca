@@ -1,44 +1,36 @@
-import { Router } from 'express';
-import { authMiddleware } from '../middlewares/auth.js';
-import { pegarTodosOsLivros, pegarLivroPorId, criarNovoLivro, atualizarLivro, deletarLivro, borrowLivro, returnLivro } from '../controller/books-controller.js';
-import { verificarUsuario } from '../middlewares/admin.js';
+import express from "express";
+import { getBooks, getBookById, createBook, updateBook, deleteBook,borrowBook, returnBook,} from "../controller/books-controller.js";
+import { authMiddleware } from "../middlewares/auth.js";
+import { verificarUsuario } from "../middlewares/admin.js";
 
-const booksRouter = Router();
-booksRouter.use(authMiddleware);
+const booksRouter = express.Router();
 
-booksRouter.get('/', (req, res) => {
-    pegarTodosOsLivros(req, res);
-    res.status(200).json({ message: "Lista de livros" });
+booksRouter.get("/",  (req, res) => {
+    getBooks(req, res);
 });
 
-booksRouter.get('/:id', (req, res) => {
-    pegarLivroPorId(req, res);
-    res.status(200).json({ message: "Detalhes do livro" });
+booksRouter.get("/:id",  (req, res) => {
+    getBookById(req, res);
 });
 
-booksRouter.post('/', verificarUsuario, (req, res) => {
-    criarNovoLivro(req, res);
-    res.status(201).json({ message: "Livro criado" });
+booksRouter.post("/", (req, res) => {
+    createBook(req, res);
 });
 
-booksRouter.patch('/:id', verificarUsuario, (req, res) => {
-    atualizarLivro(req, res);
-    res.status(200).json({ message: "Livro atualizado" });
+booksRouter.patch("/:id", (req, res) => {
+    updateBook(req, res)
 });
 
-booksRouter.delete('/:id', verificarUsuario, (req, res) => {
-    deletarLivro(req, res);
-    res.status(200).json({ message: "Livro deletado" });
+booksRouter.delete("/:id", (req, res) => {
+    deleteBook(req, res);
 });
 
-booksRouter.post('/:id/borrow', (req, res) => {
-    borrowLivro(req, res);
-    res.status(200).json({ message: "Livro emprestado" });
+booksRouter.post("/:id/borrow",  (req, res) => {
+    borrowBook(req, res);
 });
 
-booksRouter.post('/:id/return', (req, res) => {
-    returnLivro(req, res);
-    res.status(200).json({ message: "Livro devolvido" });
+booksRouter.post("/:id/return",  (req, res) => {
+    returnBook(req, res)
 });
 
 export default booksRouter;

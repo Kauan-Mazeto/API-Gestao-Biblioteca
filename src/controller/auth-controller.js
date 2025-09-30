@@ -1,9 +1,9 @@
 
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function registrarUsuario(req, res) {
-    const { username, password } = req.body;
+    const { username, password, isAdmin } = req.body;
 
     if (!username || !password) {
         return res.status(400).json({ error: "Username e password são obrigatórios" });

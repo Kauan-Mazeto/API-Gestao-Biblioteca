@@ -1,21 +1,26 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-
 export async function verificarUsuario(req, res, next) {
-
+    
     try {
 
-        const user = await prisma.user.findUnique({ where: { id: req.user.id } });
+        // REVER
+        const id = parseInt(req.user.id)
 
+        // verificar se o usuario existe no banco
+        const user = await prisma.user.findUnique({
+            where: {id:Number(id)}
+        })
+
+        // verifcar SE existe e SE é admin
         if (!user || !user.isAdmin) {
-            return res.status(403).json({ error: "Acesso negado. Apenas administradores podem usar esta rota." });
+            return res.status(403).json({ mensagem: "somente admin pode realizar essa funcionalidade" });
         }
 
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: "Erro ao verificar usuário" });
-    }
+        next();
 
-    next();
+    } catch(error) {
+        return res.status(500).json({ mensagem: "Erro interno no servidor" });
+    }
 }
